@@ -10,6 +10,11 @@ echo \
   sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt-get -y update
 sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-sudo docker run -d --name Jupyter --mount type=bind,source="/mnt/c/Users/..." ,target=/work -p 8888:8888 richi1325/spylon:1.0.0
-echo "sudo service docker start" >> $HOME/.bashrc
-echo "sudo docker start Jupyter" >> $HOME/.bashrc
+sudo service docker start
+container_id=$(sudo docker run -d --name Jupyter --mount type=bind,source="/mnt/c/Users/...",target=/work -p 8888:8888 richi1325/spylon:1.0.0)
+if [ -n "$container_id" ]; then
+  echo "sudo service docker start" >> $HOME/.bashrc
+  echo "sudo docker start Jupyter" >> $HOME/.bashrc
+else
+  echo "No se pudo crear el contenedor"
+fi
